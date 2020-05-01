@@ -50,7 +50,9 @@ def check_valid(tentative)
   a = 0 # reste à 0 tant que la tentative est valide
   tentative.length != 4 ? a += 1 : a
   tentative = tentative.split(//)
-
+  tentative.map! { |n| n.to_i}
+  tentative.each { |n| n > 6 ? a += 1 : a}
+  tentative.each { |n| n < 1 ? a += 1 : a}
 
   # si tout est ok, on renvoi un array de la tentative, sinon false
   if a == 0
