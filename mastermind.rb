@@ -19,7 +19,7 @@ class Board
     puts " "
     puts "  Joueur: #{@nom_joueur}"
     puts ""
-    puts "  CODE   X X X X"
+    puts "  CODE   #{code}"
     for i in 0..11 do
       j = 12-i-1
       puts "    #{j+1<10 ? ' ' : ''}#{j+1}   #{@propositions[j][0]} #{@propositions[j][1]} #{@propositions[j][2]} #{@propositions[j][3]}   #{@reponses[j][0]}#{@reponses[j][1]}#{@reponses[j][2]}#{@reponses[j][3]}"
@@ -62,18 +62,53 @@ def check_valid(tentative)
   end
 end
 
-def gen_reponse(tentative)
-  # genere une réponse à une tentative du joueur
-  rep =[]
-  4.times { rep.push "." }
-  # "+" => bonne valeur et position
-  # "-" => bonne valeur, mauvaise position
-  # "." => nok
-  
+def gen_reponse(try, code)
   # loop sur tentative, on push "+" dans rep à chaque fois que la valeur est égale à celle de code
   # loop sur tentative, on push "-" dans rep à chaque fois que la valeur est ailleurs dans le code
-  # loop sur rep pour pusher "." dans les cases vides
+  # loop sur rep pour pusher "." dans les cases videsrep = []
+  # for i in 0..3 do
+  #   if try[i] == code[i] 
+  #     rep.push("+")
+  #   elsif code.include?(try[i])
+  #     nb_code = code.count(try[i])
+  #     nb_try = try.count(try[i])
+  #     if nb_try <= nb_code
+  #       nb_try.times {rep.push("-")}
+  #     elsif nb_try > nb_code
+  #       nb_code.times {rep.push("-")}
+  #     end
+  #   end
+  # end
+  # for i in 0..3 do
+  #   if !rep[i] 
+  #     rep.push(".")
+  #   end
+  # end
 
+  rep=[]
+  a = [0, 0, 0, 0, 0, 0] # bon nb + bonne position
+  b = [0, 0, 0, 0, 0, 0] # bon nb, mauvaise pos  
+  c = 0 # les autres
+
+
+  for i in 1..6
+    cc = code.count(i)
+    ct = try.count(i)
+    for j in 0..3
+      if (code[j] == i && try[j] == i)
+        a[i-1] += 1
+      end
+    end
+    b[i-1] = [cc, ct].min - a[i-1]
+  end
+
+  c = 4 - a.sum - b.sum
+
+  (a.sum).times { rep.push("+")}
+  (b.sum).times { rep.push("-")}
+  c.times { rep.push(".")}
+
+  # rep.sort!
   return rep
 end
 
@@ -93,7 +128,9 @@ def nouvelle_partie(joueur)
   
 
   # generer le code
-  code = [1, 2, 3, 4]
+  base = [1, 2, 3, 4, 5, 6]
+  code = base.sample(4)
+
   # creer une board
   partie = Board.new(joueur.name, code, propositions, reponses)
 
@@ -106,10 +143,10 @@ def nouvelle_partie(joueur)
     tentative = gets.chomp
     if check_valid(tentative)
       # verifie que la reponse est valide
-      partie.propositions[tour-1] = check_valid(tentative)
+      new_try = check_valid(tentative)
+      partie.propositions[tour-1] = new_try
       # generer la reponse
-      partie.reponses[tour-1] = gen_reponse(tentative)
-      
+      partie.reponses[tour-1] = gen_reponse(new_try, code)
     else 
       partie.propositions[tour-1] = ["E", "R", "R", "."]
       partie.reponses[tour-1] = ["e", "r", "r", "."]
@@ -143,6 +180,7 @@ end
     # traiter la proposition (générer une réponse)
     # loop
 
+
 # Loop de déroulement des parties
 jouer = 1     # rejouer tant que == 1
 nbr_game = 0  # nombre de parties jouées
@@ -155,6 +193,8 @@ until jouer == 0 do
   jouer = nouvelle_partie(joueur)
 end
 
+
+# Fin de partie 
 puts " "
 puts "Nombre de parties jouées: #{nbr_game}"
 # puts "Victoires: "
