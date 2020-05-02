@@ -63,34 +63,10 @@ def check_valid(tentative)
 end
 
 def gen_reponse(try, code)
-  # loop sur tentative, on push "+" dans rep à chaque fois que la valeur est égale à celle de code
-  # loop sur tentative, on push "-" dans rep à chaque fois que la valeur est ailleurs dans le code
-  # loop sur rep pour pusher "." dans les cases videsrep = []
-  # for i in 0..3 do
-  #   if try[i] == code[i] 
-  #     rep.push("+")
-  #   elsif code.include?(try[i])
-  #     nb_code = code.count(try[i])
-  #     nb_try = try.count(try[i])
-  #     if nb_try <= nb_code
-  #       nb_try.times {rep.push("-")}
-  #     elsif nb_try > nb_code
-  #       nb_code.times {rep.push("-")}
-  #     end
-  #   end
-  # end
-  # for i in 0..3 do
-  #   if !rep[i] 
-  #     rep.push(".")
-  #   end
-  # end
-
   rep=[]
   a = [0, 0, 0, 0, 0, 0] # bon nb + bonne position
   b = [0, 0, 0, 0, 0, 0] # bon nb, mauvaise pos  
   c = 0 # les autres
-
-
   for i in 1..6
     cc = code.count(i)
     ct = try.count(i)
@@ -101,23 +77,17 @@ def gen_reponse(try, code)
     end
     b[i-1] = [cc, ct].min - a[i-1]
   end
-
   c = 4 - a.sum - b.sum
-
   (a.sum).times { rep.push("+")}
   (b.sum).times { rep.push("-")}
   c.times { rep.push(".")}
-
-  # rep.sort!
   return rep
 end
 
 def nouvelle_partie(joueur)
-
-  joueur = joueur
-
   game = 1
   tour = 0
+  win = 0
   # array du code, des propositions, des reponses
   code = []
   propositions = []
@@ -125,15 +95,14 @@ def nouvelle_partie(joueur)
   reponses = []
   12.times { reponses.push([" ", " ", " ", " "])}
 
-  
-
   # generer le code
   base = [1, 2, 3, 4, 5, 6]
-  code = base.sample(4)
+  4.times { code.push(base.sample) }
 
   # creer une board
   partie = Board.new(joueur.name, code, propositions, reponses)
-
+  
+  # boucle des essais du joueur
   until game != 1 do
     tour += 1
     tour >= 12 ? game = 0 : game = 1
@@ -151,9 +120,24 @@ def nouvelle_partie(joueur)
       partie.propositions[tour-1] = ["E", "R", "R", "."]
       partie.reponses[tour-1] = ["e", "r", "r", "."]
     end
+
+    #check win
+    if partie.reponses[tour-1] == ["+", "+", "+", "+"]
+      win = 1
+      
+      game = 0
+    end
+
   end
 
   partie.display
+  if win == 1
+    puts " "
+    puts "YOU WIN"
+    # tries.push(tour)
+  end
+  puts "Tries: #{tour}"
+  puts " "
   puts "Fin de partie"
   puts "Rejouer ? (O/N)"
   rejouer = gets.chomp
@@ -162,28 +146,10 @@ def nouvelle_partie(joueur)
 end
 
 
-
-
-# initialisation
-  # initialiser les variables
-  # array du code, des propositions, des reponses
-# code = [0, 0, 0, 0]
-
-  # nom_joueur = joueur.name
-  # generer le code
-  # creer une board
-
-  # lancer la boucle de la partie
-    # effacer / redessiner le jeu
-    # demander une proposition au joueur
-    # check validité de la proposition
-    # traiter la proposition (générer une réponse)
-    # loop
-
-
 # Loop de déroulement des parties
 jouer = 1     # rejouer tant que == 1
 nbr_game = 0  # nombre de parties jouées
+# tries = []  # pour calculer la moyenne du nb d'essais
 
 # creer un joueur
 joueur = Player.new("Mathieu")
@@ -194,7 +160,7 @@ until jouer == 0 do
 end
 
 
-# Fin de partie 
+# Fin du jeu 
 puts " "
 puts "Nombre de parties jouées: #{nbr_game}"
 # puts "Victoires: "
