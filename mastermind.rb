@@ -62,8 +62,24 @@ def check_valid(tentative)
   end
 end
 
+def gen_reponse(tentative)
+  # genere une réponse à une tentative du joueur
+  rep =[]
+  4.times { rep.push "." }
+  # "+" => bonne valeur et position
+  # "-" => bonne valeur, mauvaise position
+  # "." => nok
+  
+  # loop sur tentative, on push "+" dans rep à chaque fois que la valeur est égale à celle de code
+  # loop sur tentative, on push "-" dans rep à chaque fois que la valeur est ailleurs dans le code
+  # loop sur rep pour pusher "." dans les cases vides
 
-def nouvelle_partie()
+  return rep
+end
+
+def nouvelle_partie(joueur)
+
+  joueur = joueur
 
   game = 1
   tour = 0
@@ -72,10 +88,10 @@ def nouvelle_partie()
   propositions = []
   12.times { propositions.push(["-", "-", "-", "-"]) }
   reponses = []
-  12.times { reponses.push([".", ".", ".", "."])}
+  12.times { reponses.push([" ", " ", " ", " "])}
 
-  # creer un joueur
-  joueur = Player.new("Mathieu")
+  
+
   # generer le code
   code = [1, 2, 3, 4]
   # creer une board
@@ -89,10 +105,14 @@ def nouvelle_partie()
     puts "Nouvelle tentative ?"
     tentative = gets.chomp
     if check_valid(tentative)
+      # verifie que la reponse est valide
       partie.propositions[tour-1] = check_valid(tentative)
       # generer la reponse
+      partie.reponses[tour-1] = gen_reponse(tentative)
+      
     else 
       partie.propositions[tour-1] = ["E", "R", "R", "."]
+      partie.reponses[tour-1] = ["e", "r", "r", "."]
     end
   end
 
@@ -112,14 +132,8 @@ end
   # array du code, des propositions, des reponses
 # code = [0, 0, 0, 0]
 
-
-
-
-
   # nom_joueur = joueur.name
-
   # generer le code
-
   # creer une board
 
   # lancer la boucle de la partie
@@ -133,9 +147,12 @@ end
 jouer = 1     # rejouer tant que == 1
 nbr_game = 0  # nombre de parties jouées
 
+# creer un joueur
+joueur = Player.new("Mathieu")
+
 until jouer == 0 do
   nbr_game += 1
-  jouer = nouvelle_partie()
+  jouer = nouvelle_partie(joueur)
 end
 
 puts " "
