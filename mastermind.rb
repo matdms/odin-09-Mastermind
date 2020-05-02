@@ -19,7 +19,8 @@ class Board
     puts " "
     puts "  Joueur: #{@nom_joueur}"
     puts ""
-    puts "  CODE   #{code}"
+    # puts "  CODE   #{code}"
+    puts "  CODE   X X X X"
     for i in 0..11 do
       j = 12-i-1
       puts "    #{j+1<10 ? ' ' : ''}#{j+1}   #{@propositions[j][0]} #{@propositions[j][1]} #{@propositions[j][2]} #{@propositions[j][3]}   #{@reponses[j][0]}#{@reponses[j][1]}#{@reponses[j][2]}#{@reponses[j][3]}"
@@ -108,6 +109,10 @@ def nouvelle_partie(joueur)
     tour >= 12 ? game = 0 : game = 1
     partie.display
     puts "Code = 4 chiffres de 1 à 6 (ex: 1234)"
+    puts "  + => Valeur et position OK"
+    puts "  - => Valeur OK"
+    puts "  . => NOK"
+    puts " "
     puts "Nouvelle tentative ?"
     tentative = gets.chomp
     if check_valid(tentative)
