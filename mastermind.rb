@@ -63,68 +63,85 @@ def check_valid(tentative)
 end
 
 
+def nouvelle_partie()
+
+  game = 1
+  tour = 0
+  # array du code, des propositions, des reponses
+  code = []
+  propositions = []
+  12.times { propositions.push(["-", "-", "-", "-"]) }
+  reponses = []
+  12.times { reponses.push([".", ".", ".", "."])}
+
+  # creer un joueur
+  joueur = Player.new("Mathieu")
+  # generer le code
+  code = [1, 2, 3, 4]
+  # creer une board
+  partie = Board.new(joueur.name, code, propositions, reponses)
+
+  until game != 1 do
+    tour += 1
+    tour >= 12 ? game = 0 : game = 1
+    partie.display
+    puts "Code = 4 chiffres de 1 à 6 (ex: 1234)"
+    puts "Nouvelle tentative ?"
+    tentative = gets.chomp
+    if check_valid(tentative)
+      partie.propositions[tour-1] = check_valid(tentative)
+      # generer la reponse
+    else 
+      partie.propositions[tour-1] = ["E", "R", "R", "."]
+    end
+  end
+
+  partie.display
+  puts "Fin de partie"
+  puts "Rejouer ? (O/N)"
+  rejouer = gets.chomp
+  ( rejouer == "N" || rejouer == "n" ) ? (return 0) : (return 1)
+
+end
+
+
+
+
 # initialisation
   # initialiser les variables
   # array du code, des propositions, des reponses
-code = [0, 0, 0, 0]
-propositions = [  ["-", "-", "-", "-"],
-                  ["-", "-", "-", "-"],
-                  ["-", "-", "-", "-"],
-                  ["-", "-", "-", "-"],
-                  ["-", "-", "-", "-"],
-                  ["-", "-", "-", "-"],
-                  ["-", "-", "-", "-"],
-                  ["-", "-", "-", "-"],
-                  ["-", "-", "-", "-"],
-                  ["-", "-", "-", "-"],
-                  ["-", "-", "-", "-"],
-                  ["-", "-", "-", "-"], ]
+# code = [0, 0, 0, 0]
 
-reponses = [  [".", ".", ".", "."],
-              [".", ".", ".", "."],
-              [".", ".", ".", "."],
-              [".", ".", ".", "."],
-              [".", ".", ".", "."],
-              [".", ".", ".", "."],
-              [".", ".", ".", "."],
-              [".", ".", ".", "."],
-              [".", ".", ".", "."],
-              [".", ".", ".", "."],
-              [".", ".", ".", "."],
-              [".", ".", ".", "."] ]
 
-  # creer un joueur
-joueur = Player.new("Mathieu")
-# nom_joueur = joueur.name
+
+
+
+  # nom_joueur = joueur.name
 
   # generer le code
-code = [1, 2, 3, 4]
 
   # creer une board
-partie = Board.new(joueur.name, code, propositions, reponses)
 
   # lancer la boucle de la partie
-game = 1
     # effacer / redessiner le jeu
     # demander une proposition au joueur
     # check validité de la proposition
     # traiter la proposition (générer une réponse)
     # loop
 
-tour = 0
+# Loop de déroulement des parties
+jouer = 1     # rejouer tant que == 1
+nbr_game = 0  # nombre de parties jouées
 
-until game != 1 do
-  tour += 1
-  tour >= 12 ? game = 0 : game = 1
-  partie.display
-  puts "Nouvelle tentative ? (ex: 1234)"
-  tentative = gets.chomp
-  if check_valid(tentative)
-    partie.propositions[tour-1] = check_valid(tentative)
-    # generer la reponse
-  else 
-    partie.propositions[tour-1] = ["E", "R", "R", "."]
-  end
+until jouer == 0 do
+  nbr_game += 1
+  jouer = nouvelle_partie()
 end
 
-partie.display
+puts " "
+puts "Nombre de parties jouées: #{nbr_game}"
+# puts "Victoires: "
+# puts "Nbre de coups moyen: "
+puts " "
+puts "bye bye"
+puts " "
