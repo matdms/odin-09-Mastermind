@@ -1,4 +1,44 @@
-# Classes
+=begin
+
+Classes
+  Board
+    #initialize(nom_joueur, code, propositions, reponses)
+    #display()
+  Player
+    #initialize(name) > Ajouter le type (human / computer) et un role (codemaker / codebreaker)
+    #display
+  Game
+    #initialize
+      game = [partie1, partie2, ...]
+    #display
+  Partie
+    #initialize
+      partie = {  Codemaker => Player1
+                  Codebreaker => Player2
+                  Score => [score1, score2] }
+    #display
+  Code
+    :code
+    #initialize
+      génère un nouveau code
+    #get_value
+  Tentative
+    #initialize
+    #check_valid
+    #get_feedback
+
+
+Fonctions
+  check_valid(tentative)    > en méthode de Tentative
+  gen_reponse(try, code)    > en méthode de Tentative
+  nouvelle_partie(joueur)   > Transformer en méthode de Partie ?
+
+Main Loop
+
+=end
+
+
+# CLASSES
 
 # Board
 class Board
@@ -150,6 +190,8 @@ def nouvelle_partie(joueur)
 
 end
 
+
+# MAIN LOOP
 
 # Loop de déroulement des parties
 jouer = 1     # rejouer tant que == 1
