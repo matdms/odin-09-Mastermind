@@ -7,52 +7,7 @@ require_relative "board.rb"
 require_relative "player.rb"
 
 
-=begin
 
-TODO
-Try and create 1 file par class
-and just leave the main loop in here
-  require_relative "mon_fichier.rb"
-
-
-STRUCTURE
-  Classes
-    Board
-      #initialize(nom_joueur, code, propositions, reponses)
-      #display()
-    Player
-      #initialize(name) > Ajouter le type (human / computer) et un role (codemaker / codebreaker)
-      #display
-      #play
-    Game
-      #initialize
-        game = [partie1, partie2, ...]
-      #display
-    Partie
-      #initialize
-        partie = {  Codemaker => Player1
-                    Codebreaker => Player2
-                    Score => [score1, score2] }
-      #display
-    Code
-      :code
-      #initialize
-        génère un nouveau code
-      #get_value
-    Tentative
-      #initialize
-      #check_valid
-      #get_feedback
-
-
-  Fonctions
-    check_valid(tentative)    > en méthode de Tentative
-    gen_reponse(try, code)    > en méthode de Tentative
-    nouvelle_partie(joueur)   > Transformer en méthode de Partie ?
-
-  Main Loop
-
-=end
 
 
 # FONCTIONS
@@ -186,3 +141,49 @@ puts "Nombre de parties jouées: #{nbr_game}"
 puts " "
 puts "bye bye"
 puts " "
+
+
+
+=begin
+
+idea for proper refactoring of the code:
+
+
+STRUCTURE
+  Classes
+    Board
+      #initialize(nom_joueur, code, propositions, reponses)
+      #display()
+    Player
+      #initialize(name) > Ajouter le type (human / computer) et un role (codemaker / codebreaker)
+      #display
+      #play
+    Game
+      #initialize
+        game = [partie1, partie2, ...]
+      #display
+    Partie
+      #initialize
+        partie = {  Codemaker => Player1
+                    Codebreaker => Player2
+                    Score => [score1, score2] }
+      #display
+    Code
+      :code
+      #initialize
+        génère un nouveau code
+      #get_value
+    Tentative
+      #initialize
+      #check_valid
+      #get_feedback
+
+
+  Fonctions
+    check_valid(tentative)    > en méthode de Tentative
+    gen_reponse(try, code)    > en méthode de Tentative
+    nouvelle_partie(joueur)   > Transformer en méthode de Partie ?
+
+  Main Loop
+
+=end
