@@ -15,6 +15,8 @@ class Partie
       @joueur1.role = "Codemaker"
       @joueur2.role = "Codebreaker"
     end
+    @game = true
+    @win = false
   end
   
   def display()
